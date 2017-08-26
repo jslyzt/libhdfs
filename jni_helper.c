@@ -356,6 +356,17 @@ done:
     return jthr;
 }
 
+static int gpath_size = 0;
+static char* gpath_data = 0;
+void setJNIEnvPaths(const char* path, int size) {
+    if(gpath_data != 0) {
+        free(gpath_data);
+        gpath_data = 0;
+    }
+    gpath_size = size;
+    gpath_data = malloc(sizeof(char)*size)
+    memcpy(gpath_data, path, size);
+}
 
 /**
  * Get the global JNI environemnt.
@@ -393,16 +404,19 @@ static JNIEnv* getGlobalJNIEnv(void)
 
     if (noVMs == 0) {
         //Get the environment variables for initializing the JVM
-        hadoopClassPath = getenv("CLASSPATH");
-        if (hadoopClassPath == NULL) {
-            fprintf(stderr, "Environment variable CLASSPATH not set!\n");
-            return NULL;
-        } 
-        optHadoopClassPathLen = strlen(hadoopClassPath) + 
-          strlen(hadoopClassPathVMArg) + 1;
+        if(gpath_size <= 0) {
+            hadoopClassPath = getenv("CLASSPATH");
+            if (hadoopClassPath == NULL) {
+                fprintf(stderr, "Environment variable CLASSPATH not set!\n");
+                return NULL;
+            } 
+            optHadoopClassPathLen = strlen(hadoopClassPath) +  strlen(hadoopClassPathVMArg) + 1;
+        } else {
+            hadoopClassPath = gpath_data;
+            optHadoopClassPathLen = gpath_size +  strlen(hadoopClassPathVMArg) + 1;
+        }
         optHadoopClassPath = malloc(sizeof(char)*optHadoopClassPathLen);
-        snprintf(optHadoopClassPath, optHadoopClassPathLen,
-                "%s%s", hadoopClassPathVMArg, hadoopClassPath);
+        snprintf(optHadoopClassPath, optHadoopClassPathLen, "%s%s", hadoopClassPathVMArg, hadoopClassPath);
 
         // Determine the # of LIBHDFS_OPTS args
         hadoopJvmArgs = getenv("LIBHDFS_OPTS");

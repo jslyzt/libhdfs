@@ -153,6 +153,11 @@ jthrowable hadoopConfSetStr(JNIEnv *env, jobject jConfiguration,
 jthrowable fetchEnumInstance(JNIEnv *env, const char *className,
                              const char *valueName, jobject *out);
 
+/**
+ * set jni Env.
+ */
+void setJNIEnvPaths(const char* path, int size);
+
 #endif /*LIBHDFS_JNI_HELPER_H*/
 
 /**

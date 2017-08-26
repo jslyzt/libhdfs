@@ -928,6 +928,12 @@ extern  "C" {
     LIBHDFS_EXTERNAL
     void hadoopRzBufferFree(hdfsFile file, struct hadoopRzBuffer *buffer);
 
+    /**
+     * Set jni env info.
+     */
+    LIBHDFS_EXTERNAL
+    void hdfsSetJniEnvPaths(const char* path, int size);
+
 #ifdef __cplusplus
 }
 #endif

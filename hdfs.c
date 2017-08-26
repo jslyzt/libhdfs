@@ -3335,6 +3335,11 @@ int hdfsFileIsEncrypted(hdfsFileInfo *fileInfo)
     return !!(extInfo->flags & HDFS_EXTENDED_FILE_INFO_ENCRYPTED);
 }
 
+void hdfsSetJniEnvPaths(const char* path, int size) 
+{
+    setJNIEnvPaths(path, size);
+}
+
 
 
 /**
