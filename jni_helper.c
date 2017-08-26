@@ -364,7 +364,7 @@ void setJNIEnvPaths(const char* path, int size) {
         gpath_data = 0;
     }
     gpath_size = size;
-    gpath_data = malloc(sizeof(char)*size)
+    gpath_data = malloc(sizeof(char)*size);
     memcpy(gpath_data, path, size);
 }
 
